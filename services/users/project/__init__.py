@@ -5,9 +5,11 @@ import os  # nuevo
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy  # nuevo
+from flask_debugtoolbar import DebugToolbarExtension
 
 # instanciamos la db
 db = SQLAlchemy()
+toolbar = DebugToolbarExtension()
 
 
 def create_app(script_info=None):
@@ -20,6 +22,7 @@ def create_app(script_info=None):
 
     # configuramos la extension
     db.init_app(app)
+    toolbar.init_app(app)
 
     # registramos blueprints
     from project.api.users import users_blueprint
