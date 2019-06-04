@@ -13,7 +13,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - export REACT_APP_USERS_SERVICE_URL=http://34.238.247.23/ # nuevo
+  - export REACT_APP_USERS_SERVICE_URL=http://18.204.212.137/ # nuevo
   - docker-compose -f docker-compose-dev.yml up -d --build
 
 script:

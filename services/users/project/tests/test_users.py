@@ -5,15 +5,8 @@ import json
 import unittest
 
 from project.tests.base import BaseTestCase
-from project import db
-from project.api.models import User
+from project.tests.utils import add_user  # nuevo
 
-
-def add_user(username, email):
-    user = User(username=username, email=email)
-    db.session.add(user)
-    db.session.commit()
-    return user
 
 
 class TestUserService(BaseTestCase):
@@ -36,7 +29,8 @@ class TestUserService(BaseTestCase):
                 '/users',
                 data=json.dumps({
                     'username': 'ldragons',
-                    'email': 'nickmostacero@upeu.edu.pe'
+                    'email': 'nickmostacero@upeu.edu.pe',
+                    'password': 'greaterthaneight'
                 }),
                 content_type='application/json',
             )
@@ -66,7 +60,10 @@ class TestUserService(BaseTestCase):
         with self.client:
             response = self.client.post(
                 '/users',
-                data=json.dumps({'email': 'nickmostacero@upeu.edu.pe'}),
+                data=json.dumps({
+                    'email': 'nickmostacero@upeu.edu.pe',
+                    'password': 'greaterthaneight'
+                }),
                 content_type='application/json',
             )
             data = json.loads(response.data.decode())
@@ -81,7 +78,8 @@ class TestUserService(BaseTestCase):
                 '/users',
                 data=json.dumps({
                     'username': 'ldragons',
-                    'email': 'nickmostacero@upeu.edu.pe'
+                    'email': 'nickmostacero@upeu.edu.pe',
+                    'password': 'greaterthaneight'
                 }),
                 content_type='application/json',
             )
@@ -89,7 +87,8 @@ class TestUserService(BaseTestCase):
                 '/users',
                 data=json.dumps({
                     'username': 'ldragons',
-                    'email': 'nickmostacero@upeu.edu.pe'
+                    'email': 'nickmostacero@upeu.edu.pe',
+                    'password': 'greaterthaneight'
                 }),
                 content_type='application/json',
             )
@@ -101,7 +100,7 @@ class TestUserService(BaseTestCase):
     def test_single_user(self):
         """ Asegurando de que el usuario individual se
         comporte correctamente."""
-        user = add_user('ldragons', 'nickmostacero@upeu.edu.pe')
+        user = add_user('ldragons', 'nickmostacero@upeu.edu.pe', 'greaterthaneight')
         with self.client:
             response = self.client.get(f'/users/{user.id}')
             data = json.loads(response.data.decode())
@@ -133,8 +132,8 @@ class TestUserService(BaseTestCase):
     def test_all_users(self):
         """ Asegurando de que todos los usuarios se
         comporten correctamente."""
-        add_user('ldragons', 'nickmostacero@upeu.edu.pe')
-        add_user('brayan', 'pibex.g.m@hotmail.es')
+        add_user('ldragons', 'nickmostacero@upeu.edu.pe', 'greaterthaneight')
+        add_user('brayan', 'pibex.g.m@hotmail.es', 'greaterthaneight')
         with self.client:
             response = self.client.get('/users')
             data = json.loads(response.data.decode())
@@ -160,8 +159,8 @@ class TestUserService(BaseTestCase):
         """Asegurando que la ruta principal funcione
         correctamente cuando un usuario es correctamente
         agregado a la base de datos"""
-        add_user('ldragons', 'nickmostacero@upeu.edu.pe')
-        add_user('brayan', 'pibex.g.m@hotmail.es')
+        add_user('ldragons', 'nickmostacero@upeu.edu.pe', 'greaterthaneight')
+        add_user('brayan', 'pibex.g.m@hotmail.es', 'greaterthaneight')
         with self.client:
             response = self.client.get('/')
             self.assertEqual(response.status_code, 200)
@@ -178,7 +177,8 @@ class TestUserService(BaseTestCase):
                 '/',
                 data=dict(
                     username='ldragons',
-                    email='nickmostacero@upeu.edu.pe'),
+                    email='nickmostacero@upeu.edu.pe',
+                    password='greaterthaneight'),
                 follow_redirects=True
             )
             self.assertEqual(response.status_code, 200)

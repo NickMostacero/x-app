@@ -7,11 +7,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy  # nuevo
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS  # nuevo
+from flask_migrate import Migrate  # nuevo
+from flask_bcrypt import Bcrypt  # nuevo
 
 # instanciamos la db
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
 cors = CORS()  # nuevo
+migrate = Migrate()
+bcrypt = Bcrypt()
 
 
 # nuevo
@@ -27,6 +31,8 @@ def create_app(script_info=None):
     db.init_app(app)
     toolbar.init_app(app)
     cors.init_app(app)  # nuevo
+    migrate.init_app(app, db)  # nuevo
+    bcrypt.init_app(app)  # nuevo
 
     # registramos blueprints
     from project.api.users import users_blueprint
