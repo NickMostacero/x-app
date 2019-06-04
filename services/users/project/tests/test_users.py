@@ -8,7 +8,6 @@ from project.tests.base import BaseTestCase
 from project.tests.utils import add_user  # nuevo
 
 
-
 class TestUserService(BaseTestCase):
     """Tests para el servicio Users."""
 
@@ -100,7 +99,9 @@ class TestUserService(BaseTestCase):
     def test_single_user(self):
         """ Asegurando de que el usuario individual se
         comporte correctamente."""
-        user = add_user('ldragons', 'nickmostacero@upeu.edu.pe', 'greaterthaneight')
+        user = add_user(
+            'ldragons', 'nickmostacero@upeu.edu.pe', 'greaterthaneight'
+            )
         with self.client:
             response = self.client.get(f'/users/{user.id}')
             data = json.loads(response.data.decode())
